@@ -79,7 +79,7 @@ x_test = x_test.reset_index(drop = True)
 y_train = y_train.reset_index(drop = True)
 y_test = y_test.reset_index(drop = True)
 
-vectorizer = TfidfVectorizer(min_df=4, max_df=0.9)
+vectorizer = TfidfVectorizer(min_df=3, max_df=0.9)
 
 train_vectors = vectorizer.fit_transform(x_train)
 test_vectors = vectorizer.transform(x_test)
