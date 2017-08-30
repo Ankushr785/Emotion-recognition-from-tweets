@@ -17,4 +17,13 @@ A comprehensive approach on recognizing emotion (sentiment) from a certain tweet
 
 -> Removal of multi-letter ambiguities, e.g 'noooo' gets converted to 'no'
 
+-> (Optional) Removal of stop-words  - caused decrease in f1-score as well as overall accuracy
+
 > A look at the data before and after pre-processing
+
+*before
+
+![before_pre](https://user-images.githubusercontent.com/26039458/29850620-868992a4-8d4c-11e7-95f2-582be11a7bbd.png)
+
+*after
+
