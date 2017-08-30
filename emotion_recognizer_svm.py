@@ -90,8 +90,9 @@ predicted_sentiment = model.predict(test_vectors)
 
 print(classification_report(y_test, predicted_sentiment))
 
+predicted_sentiments = []
 for s in range(len(predicted_sentiment)):
-    predicted_sentiment[s] = uniqueness[predicted_sentiment[s]]
+    predicted_sentiments.append(uniqueness[predicted_sentiment[s]])
 
 for z in range(len(y_train)):
     y_train[z] = uniqueness[y_train[z]]
