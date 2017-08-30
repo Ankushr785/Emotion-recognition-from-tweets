@@ -60,10 +60,11 @@ for i in range(len(data)):
         
 data = data.reset_index(drop=True)
 for i in range(len(data)):
-    words = data.content[i][0]
-    for j in range(len(data.content[i])-1):
-        words+= ' ' + data.content[i][j+1]
-    data.content[i] = words
+    if data.content[i]!=0:
+        words = data.content[i][0]
+        for j in range(len(data.content[i])-1):
+            words+= ' ' + data.content[i][j+1]
+        data.content[i] = words
         
         
 from sklearn.feature_extraction.text import TfidfVectorizer
