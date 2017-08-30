@@ -23,11 +23,12 @@ A comprehensive approach on recognizing emotion (sentiment) from a certain tweet
 
 *before*
 
-![before_pre](https://user-images.githubusercontent.com/26039458/29850620-868992a4-8d4c-11e7-95f2-582be11a7bbd.png)
+![whole_before](https://user-images.githubusercontent.com/26039458/29850795-c896e38a-8d4d-11e7-932a-e3e30a9ad675.png)
 
 *after*
 
-![after](https://user-images.githubusercontent.com/26039458/29850682-f58c4f20-8d4c-11e7-821a-b2cf3ccb4e88.png)
+![whole_after](https://user-images.githubusercontent.com/26039458/29850797-cce512fe-8d4d-11e7-84c5-229422f0e142.png)
+
 
 **Vectorization**
 
@@ -37,4 +38,4 @@ A comprehensive approach on recognizing emotion (sentiment) from a certain tweet
 
 -> Support Vector Machine
 
--> Performance
+-> Performance - 
