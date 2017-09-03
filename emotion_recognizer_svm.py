@@ -18,7 +18,7 @@ os.chdir('/home/ankushraut/Downloads')
 
 
 data = pd.read_csv('text_emotion.csv')
-data = data.iloc[:100,:]
+#data = data.iloc[:100,:]
 
 
 #stopset = set(stopwords.words('english'))
