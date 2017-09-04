@@ -5,7 +5,7 @@ A comprehensive approach on recognizing emotion (sentiment) from a certain tweet
 
 -> Given a dataset mapping tweets to the associated emotions, an emotion recognizer algorithm needs to be created.
 
--> Data source - 
+-> Data source - Crowd Flower
 
 -> Libraries - Natural Language Tool-kit (NLTK) and Sci-kit learn 
 
@@ -32,10 +32,24 @@ A comprehensive approach on recognizing emotion (sentiment) from a certain tweet
 
 **Vectorization**
 
--> Term frequency - inverse document frequency (TfidfVectorizer) deployed for converting the words to vectors
+-> Term frequency - inverse document frequency (TfidfVectorizer) deployed for converting the words to vectors (for SVM and Naive Bayes)
+
+-> Bag of words representation used as an input for the sigmoid layers model
 
 **Model - 1**
 
--> Support Vector Machine
+-> Support Vector Machine - Creation of hyperplanes separating all the classes, rbf kernel.
+
+-> Performance - 
+
+**Model - 2**
+
+-> Naive Bayes classifier - naively assuming no inter-dependence between words of a sentence corpus.
+
+-> Performance - 
+
+**Model -3**
+
+-> Aritificial Neural Network - 3 layer neural network with sigmoid activation and gradient descent optimization
 
 -> Performance - 
