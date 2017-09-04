@@ -81,7 +81,7 @@ vectorizer = TfidfVectorizer(min_df=3, max_df=0.9)
 train_vectors = vectorizer.fit_transform(x_train)
 test_vectors = vectorizer.transform(x_test)
 
-model = svm.SVC(kernel='linear') 
+model = svm.SVC(kernel='rbf') 
 model.fit(train_vectors, y_train) 
 predicted_sentiment = model.predict(test_vectors)
 
