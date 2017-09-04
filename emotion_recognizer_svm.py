@@ -96,3 +96,6 @@ for z in range(len(y_train)):
     
 prediction_df = pd.DataFrame({'Content':x_test, 'Emotion_predicted':predicted_sentiment, 'Emotion_actual': y_train})
 prediction_df.to_csv('emotion_recognizer.csv', index = False)
+
+elapsed_time = time.time() - start_time
+print ("processing time:", elapsed_time, "seconds")
