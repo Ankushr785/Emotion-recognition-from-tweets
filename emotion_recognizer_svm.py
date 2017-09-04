@@ -6,9 +6,7 @@ import re
 #importing stopwords is optional, in this case it decreased accuracy
 #from nltk.corpus import stopwords
 import itertools
-import json
 import time
-import datetime
 
 
 start_time = time.time()
