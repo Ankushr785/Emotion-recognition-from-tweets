@@ -36,22 +36,25 @@ for i in range(len(data)):
             if data.content[i][j][0] == '@':
                 index = j
         data.content[i] = np.delete(data.content[i], index)
-        words = data.content[i][0]
-        for k in range(len(data.content[i])-1):
-            words+= " " + data.content[i][k+1]
-        data.content[i] = words
-        data.content[i] = re.sub(r'[^\w]', ' ', data.content[i])
         if len(data.content[i]) == 0:
             data.drop(i, inplace = True)
         else:
-            data.content[i] = ''.join(''.join(s)[:2] for _, s in itertools.groupby(data.content[i]))
-            data.content[i] = data.content[i].replace("'", "")
-            data.content[i] = nltk.tokenize.word_tokenize(data.content[i])
-            #data.content[i] = [w for w in data.content[i] if not w in stopset]
-            for j in range(len(data.content[i])):
-                data.content[i][j] = lem.lemmatize(data.content[i][j], "v")
+            words = data.content[i][0]
+            for k in range(len(data.content[i])-1):
+                words+= " " + data.content[i][k+1]
+            data.content[i] = words
+            data.content[i] = re.sub(r'[^\w]', ' ', data.content[i])
             if len(data.content[i]) == 0:
                 data.drop(i, inplace = True)
+            else:
+                data.content[i] = ''.join(''.join(s)[:2] for _, s in itertools.groupby(data.content[i]))
+                data.content[i] = data.content[i].replace("'", "")
+                data.content[i] = nltk.tokenize.word_tokenize(data.content[i])
+                #data.content[i] = [w for w in data.content[i] if not w in stopset]
+                for j in range(len(data.content[i])):
+                    data.content[i][j] = lem.lemmatize(data.content[i][j], "v")
+                if len(data.content[i]) == 0:
+                    data.drop(i, inplace = True)
 
         
 data = data.reset_index(drop=True)
@@ -79,7 +82,7 @@ vectorizer = TfidfVectorizer(min_df=3, max_df=0.9)
 train_vectors = vectorizer.fit_transform(x_train)
 test_vectors = vectorizer.transform(x_test)
 
-model = svm.SVC(kernel='rbf') 
+model = svm.SVC(kernel='linear') 
 model.fit(train_vectors, y_train) 
 predicted_sentiment = model.predict(test_vectors)
 
@@ -87,10 +90,7 @@ print(classification_report(y_test, predicted_sentiment))
 
 predicted_sentiments = []
 for s in range(len(predicted_sentiment)):
-    predicted_sentiments.append(uniqueness[predicted_sentiment[s]])
-
-for z in range(len(y_train)):
-    y_train[z] = uniqueness[y_train[z]]
+    predicted_sentiments.append(predicted_sentiment[s])
     
 prediction_df = pd.DataFrame({'Content':x_test, 'Emotion_predicted':predicted_sentiment, 'Emotion_actual': y_train})
 prediction_df.to_csv('emotion_recognizer.csv', index = False)
