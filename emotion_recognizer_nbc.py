@@ -7,6 +7,7 @@ import re
 #from nltk.corpus import stopwords
 import itertools
 import time
+from sklearn.metrics import classification_report
 
 
 start_time = time.time()
@@ -87,6 +88,7 @@ print(model.accuracy(test_corpus))
 predictions = []
 for m in range(len(test)):
     predictions.append(model.classify(test.content[m]))
+print(classification_report(test.sentiment, predictions)
     
 predictions_df = pd.DataFrame({'Content':test.content, 'Emotion_predicted':predictions, 'Emotion_actual':test.sentiment})
 predictions_df.to_csv('naive_emotion_recognizer.csv', index = False)
