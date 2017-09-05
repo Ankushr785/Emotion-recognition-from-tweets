@@ -36,22 +36,25 @@ for i in range(len(data)):
             if data.content[i][j][0] == '@':
                 index = j
         data.content[i] = np.delete(data.content[i], index)
-        words = data.content[i][0]
-        for k in range(len(data.content[i])-1):
-            words+= " " + data.content[i][k+1]
-        data.content[i] = words
-        data.content[i] = re.sub(r'[^\w]', ' ', data.content[i])
         if len(data.content[i]) == 0:
             data.drop(i, inplace = True)
         else:
-            data.content[i] = ''.join(''.join(s)[:2] for _, s in itertools.groupby(data.content[i]))
-            data.content[i] = data.content[i].replace("'", "")
-            data.content[i] = nltk.tokenize.word_tokenize(data.content[i])
-            #data.content[i] = [w for w in data.content[i] if not w in stopset]
-            for j in range(len(data.content[i])):
-                data.content[i][j] = lem.lemmatize(data.content[i][j], "v")
+            words = data.content[i][0]
+            for k in range(len(data.content[i])-1):
+                words+= " " + data.content[i][k+1]
+            data.content[i] = words
+            data.content[i] = re.sub(r'[^\w]', ' ', data.content[i])
             if len(data.content[i]) == 0:
                 data.drop(i, inplace = True)
+            else:
+                data.content[i] = ''.join(''.join(s)[:2] for _, s in itertools.groupby(data.content[i]))
+                data.content[i] = data.content[i].replace("'", "")
+                data.content[i] = nltk.tokenize.word_tokenize(data.content[i])
+                #data.content[i] = [w for w in data.content[i] if not w in stopset]
+                for j in range(len(data.content[i])):
+                    data.content[i][j] = lem.lemmatize(data.content[i][j], "v")
+                if len(data.content[i]) == 0:
+                    data.drop(i, inplace = True)
 
         
 data = data.reset_index(drop=True)
