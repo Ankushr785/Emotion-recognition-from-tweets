@@ -18,7 +18,7 @@ os.chdir('/home/ankushraut/Downloads')
 
 
 data = pd.read_csv('text_emotion.csv')
-#data = data.iloc[:50,:]
+#data = data.iloc[:100,:]
 
 
 #stopset = set(stopwords.words('english'))
@@ -106,13 +106,16 @@ for doc in documents:
     output_row[classes.index(doc[1])] = 1
     output.append(output_row)
 
+print (len(documents), "documents")
+print (len(classes), "classes", classes)
 
-# sigmoid functions
+
+# compute sigmoid nonlinearity
 def sigmoid(x):
     output = 1/(1+np.exp(-x))
     return output
 
-# sigmoid ka derivative
+# convert output of sigmoid function to its derivative
 def sigmoid_output_to_derivative(output):
     return output*(1-output)
  
@@ -120,7 +123,6 @@ def clean_up_sentence(sentence):
     sentence_words = nltk.word_tokenize(sentence)
     return sentence_words
 
-# return bag of words array: 0 or 1 for each word in the bag that exists in the sentence
 def bow(sentence, words):
     sentence_words = clean_up_sentence(sentence)
     bag = [0]*len(words)  
@@ -153,7 +155,6 @@ def train(X, y, hidden_neurons=10, alpha=1, epochs=5000, dropout=False, dropout_
 
     synapse_0_direction_count = np.zeros_like(synapse_0)
     synapse_1_direction_count = np.zeros_like(synapse_1)
-        
     for j in iter(range(epochs+1)):
 
         # Feed forward through layers 0, 1, and 2
@@ -164,13 +165,12 @@ def train(X, y, hidden_neurons=10, alpha=1, epochs=5000, dropout=False, dropout_
             layer_1 *= np.random.binomial([np.ones((len(X),hidden_neurons))],1-dropout_percent)[0] * (1.0/(1-dropout_percent))
 
         layer_2 = sigmoid(np.dot(layer_1, synapse_1))
-
         layer_2_error = y - layer_2
 
         if (j% 1000) == 0 and j > 500:
             # if this 1k iteration's error is greater than the last iteration, break out
             if np.mean(np.abs(layer_2_error)) < last_mean_error:
-                print ("delta after "+str(j)+" iterations:" + str(np.mean(np.abs(layer_2_error))) )
+                print ("error after "+str(j)+" iterations:" + str(np.mean(np.abs(layer_2_error))) )
                 last_mean_error = np.mean(np.abs(layer_2_error))
             else:
                 print ("break:", np.mean(np.abs(layer_2_error)), ">", last_mean_error )
@@ -183,7 +183,6 @@ def train(X, y, hidden_neurons=10, alpha=1, epochs=5000, dropout=False, dropout_
         
         synapse_1_weight_update = (layer_1.T.dot(layer_2_delta))
         synapse_0_weight_update = (layer_0.T.dot(layer_1_delta))
-        
         if(j > 0):
             synapse_0_direction_count += np.abs(((synapse_0_weight_update > 0)+0) - ((prev_synapse_0_weight_update > 0) + 0))
             synapse_1_direction_count += np.abs(((synapse_1_weight_update > 0)+0) - ((prev_synapse_1_weight_update > 0) + 0))        
@@ -203,11 +202,15 @@ def train(X, y, hidden_neurons=10, alpha=1, epochs=5000, dropout=False, dropout_
                'classes': classes
               }
     synapse_file = "synapses.json"
+
+    with open(synapse_file, 'w') as outfile:
+        json.dump(synapse, outfile, indent=4, sort_keys=True)
+
     
 X = np.array(training)
 y = np.array(output)
 
-train(X, y, hidden_neurons=20, alpha=0.1, epochs=10000, dropout=False, dropout_percent=0.2)
+train(X, y, hidden_neurons=20, alpha=0.1, epochs=1000, dropout=False, dropout_percent=0.2)
 
 # load our calculated synapse values
 synapse_file = 'synapses.json' 
@@ -216,13 +219,13 @@ with open(synapse_file) as data_file:
     synapse_0 = np.asarray(synapse['synapse0']) 
     synapse_1 = np.asarray(synapse['synapse1'])
 
-def classify(sentence):
+def classify(sentence, show_details=False):
     results = model(sentence)
-    index = 0
     for i in range(len(results)):
         if results[i] == np.max(results):
-            index = i
-    return classes[index]
+            emotion = classes[i]
+    return emotion
+    
 
 #validation
 
@@ -231,8 +234,9 @@ for i in range(len(val)):
     predictions.append(classify(val.content[i]))
 
 from sklearn.metrics import f1_score
-score = f1_score(val.sentiment, predictions, average='macro') 
-print("f1-score :", score) 
+from sklearn.metrics import classification_report
+
+print(classification_report(val.sentiment, predictions))
 
 prediction_df = pd.DataFrame({'content':val.content, 'sentiment_predicted':predictions, 'sentimentActual':val.sentiment})
 
