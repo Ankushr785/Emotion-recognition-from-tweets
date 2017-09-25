@@ -1,5 +1,7 @@
 # Emotion-recognition-from-tweets
 A comprehensive approach on recognizing emotion (sentiment) from a certain tweet. Supervised machine learning.
+The 'Untitled.ipynb' file consists of a jupyter notebook of test codes.
+Rest of the .py files consist of code corresponding to their names.
 
 **Problem Statement**
 
