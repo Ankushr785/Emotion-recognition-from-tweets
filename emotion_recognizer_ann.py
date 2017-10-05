@@ -14,7 +14,7 @@ import datetime
 start_time = time.time()
 
 import os
-os.chdir('/home/ankushraut/Downloads')
+os.chdir('/tmp/guest-pltjjp/Downloads')
 
 
 data = pd.read_csv('text_emotion.csv')
@@ -27,36 +27,42 @@ from nltk.stem.wordnet import WordNetLemmatizer
 lem = WordNetLemmatizer()
 
 #comprehensive cleaning
-for i in range(len(data)):
-    data.content[i] = re.sub(r"http\S+", "", data.content[i])
-    if len(data.content[i]) == 0:
-        data.drop(i, inplace = True)
+def cleaning(text):
+    txt = str(text)
+    txt = re.sub(r"http\S+", "", txt)
+    if len(txt) == 0:
+        return 'no text'
     else:
-        data.content[i] = data.content[i].split()
+        txt = txt.split()
         index = 0
-        for j in range(len(data.content[i])):
-            if data.content[i][j][0] == '@':
+        for j in range(len(txt)):
+            if txt[j][0] == '@':
                 index = j
-        data.content[i] = np.delete(data.content[i], index)
-        if len(data.content[i]) == 0:
-            data.drop(i, inplace = True)
+        txt = np.delete(txt, index)
+        if len(txt) == 0:
+            return 'no text'
         else:
-            words = data.content[i][0]
-            for k in range(len(data.content[i])-1):
-                words+= " " + data.content[i][k+1]
-            data.content[i] = words
-            data.content[i] = re.sub(r'[^\w]', ' ', data.content[i])
-            if len(data.content[i]) == 0:
-                data.drop(i, inplace = True)
+            words = txt[0]
+            for k in range(len(txt)-1):
+                words+= " " + txt[k+1]
+            txt = words
+            txt = re.sub(r'[^\w]', ' ', txt)
+            if len(txt) == 0:
+                return 'no text'
             else:
-                data.content[i] = ''.join(''.join(s)[:2] for _, s in itertools.groupby(data.content[i]))
-                data.content[i] = data.content[i].replace("'", "")
-                data.content[i] = nltk.tokenize.word_tokenize(data.content[i])
+                txt = ''.join(''.join(s)[:2] for _, s in itertools.groupby(txt))
+                txt = txt.replace("'", "")
+                txt = nltk.tokenize.word_tokenize(txt)
                 #data.content[i] = [w for w in data.content[i] if not w in stopset]
-                for j in range(len(data.content[i])):
-                    data.content[i][j] = lem.lemmatize(data.content[i][j], "v")
-                if len(data.content[i]) == 0:
-                    data.drop(i, inplace = True)
+                for j in range(len(txt)):
+                    txt[j] = lem.lemmatize(txt[j], "v")
+                if len(txt) == 0:
+                    return 'no text'
+                else:
+                    return txt
+                
+data['content'] = data['content'].map(lambda x: cleaning(x))
+
 
         
 data = data.reset_index(drop=True)
@@ -210,7 +216,7 @@ def train(X, y, hidden_neurons=10, alpha=1, epochs=5000, dropout=False, dropout_
 X = np.array(training)
 y = np.array(output)
 
-train(X, y, hidden_neurons=20, alpha=0.1, epochs=1000, dropout=False, dropout_percent=0.2)
+train(X, y, hidden_neurons=20, alpha=0.1, epochs=10000, dropout=False, dropout_percent=0.2)
 
 # load our calculated synapse values
 synapse_file = 'synapses.json' 
