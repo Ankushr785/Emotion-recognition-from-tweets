@@ -42,7 +42,7 @@ Find the complete explanation to the approach here https://medium.com/@ankushrau
 
 **Model - 1**
 
--> Support Vector Machine - Creation of hyperplanes separating all the classes, rbf kernel.
+-> Support Vector Machine - Creation of hyperplanes separating all the classes, linear kernel.
 
 **Model - 2**
 
