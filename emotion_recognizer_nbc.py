@@ -6,9 +6,7 @@ import re
 #importing stopwords is optional, in this case it decreased accuracy
 #from nltk.corpus import stopwords
 import itertools
-import json
 import time
-import datetime
 
 
 start_time = time.time()
@@ -18,7 +16,7 @@ os.chdir('/tmp/guest-pltjjp/Downloads')
 
 
 data = pd.read_csv('text_emotion.csv')
-#data = data.iloc[:100,:]
+data = data.iloc[:1000,:]
 
 
 #stopset = set(stopwords.words('english'))
@@ -92,10 +90,12 @@ model = NBC(training_corpus)
 
 print(model.accuracy(test_corpus))
 
+from sklearn.metrics import classification_report
+
 predictions = []
 for m in range(len(test)):
     predictions.append(model.classify(test.content[m]))
-print(classification_report(test.sentiment, predictions)
+print(classification_report(test.sentiment, predictions))
     
 predictions_df = pd.DataFrame({'Content':test.content, 'Emotion_predicted':predictions, 'Emotion_actual':test.sentiment})
 predictions_df.to_csv('naive_emotion_recognizer.csv', index = False)
