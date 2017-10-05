@@ -6,9 +6,7 @@ import re
 #importing stopwords is optional, in this case it decreased accuracy
 #from nltk.corpus import stopwords
 import itertools
-import json
 import time
-import datetime
 
 
 start_time = time.time()
@@ -100,8 +98,8 @@ predicted_sentiments = []
 for s in range(len(predicted_sentiment)):
     predicted_sentiments.append(predicted_sentiment[s])
     
-prediction_df = pd.DataFrame({'Content':x_test, 'Emotion_predicted':predicted_sentiment, 'Emotion_actual': y_train})
-prediction_df.to_csv('emotion_recognizer.csv', index = False)
+prediction_df = pd.DataFrame({'Content':x_test, 'Emotion_predicted':predicted_sentiment, 'Emotion_actual': y_test})
+prediction_df.to_csv('emotion_recognizer_svm.csv', index = False)
 
 elapsed_time = time.time() - start_time
 print ("processing time:", elapsed_time, "seconds")
