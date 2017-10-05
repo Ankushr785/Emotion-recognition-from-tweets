@@ -44,16 +44,10 @@ Find the complete explanation to the approach here https://medium.com/@ankushrau
 
 -> Support Vector Machine - Creation of hyperplanes separating all the classes, rbf kernel.
 
--> Performance - 
-
 **Model - 2**
 
 -> Naive Bayes classifier - naively assuming no inter-dependence between words of a sentence corpus.
 
--> Performance - 
-
 **Model -3**
 
 -> Aritificial Neural Network - 3 layer neural network with sigmoid activation and gradient descent optimization
-
--> Performance - 
